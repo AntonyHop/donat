@@ -8,11 +8,8 @@
  */
 class main_con extends controller{
     function index(){
-      $this->Smarty->assign('name', 'Катруська');
-      $this->Smarty->display('index.tpl'); 
+      $this->Sm->assign('title', 'Главная');
+      $this->Sm->assign('win','1000');
+      $this->Sm->display('index.tpl'); 
    }
-
-    function lang($curr_lang = "ru"){
-    	echo $curr_lang;
-    }
 }

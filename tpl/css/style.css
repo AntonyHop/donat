@@ -1,0 +1,101 @@
+*{
+	margin:0;
+	padding: 0;
+}
+
+body{
+	background: url('https://getbg.net/upload/full/www.GetBg.net_Nature_Other_Violet_sky_032557_.jpg') no-repeat;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+
+.logo{
+	color:#fff;
+}
+.logo p{
+	margin-top:-10px;
+	margin-left: 120px;
+	font-style: itali;
+}
+.menu_wrapp{
+	float:right;
+}
+.main_menu{
+	list-style: none;
+}
+.main_menu li{
+	float:right;
+	padding: 25px;
+	font-size: 15pt;
+}
+.main_menu li a{
+	color:#fff;
+}
+
+.clear{
+	clear:both;
+}
+article{
+	width: 100%;
+	min-height: calc(100vh - 110px);
+}
+
+article .kon{
+	text-align: center;
+	color:#fff;
+	padding-top: 20px;
+}
+.circle{
+	margin-top: 10;
+	width:300px;
+	height:300px;
+	border-radius: 100%;
+	background: #cc33FF;
+	margin:0 auto;
+	box-shadow: 0px 0px 10px 5px #333;
+	display: table;
+	line-height: 300px;
+	animation-name: circle;
+    animation-duration: 2s;
+    -webkit-animation-name: circle;
+    -webkit-animation-duration: 2s;
+    -moz-animation-name: circle;
+    -moz-animation-duration: 2s;
+    -o-animation-name: circle;
+    -o-animation-duration: 2s;
+    animation-iteration-count:infinite;
+    -o-animation-iteration-count:infinite;
+    -moz-animation-iteration-count:infinite;
+    -webkit-animation-iteration-count:infinite;
+
+}
+.circle h3{
+	margin-top: 130px;
+	font-size: 25pt;
+	text-transform: uppercase;
+}
+footer{
+	color:#fff;
+	margin-left: 10px;
+	height: 20px
+}
+
+@-webkit-keyframes circle {
+	from { box-shadow: 0px 0px 10px 5px #333; }
+	50% { box-shadow: 0px 0px 10px 5px #FFF; }
+	to { box-shadow: 0px 0px 10px 5px #333; }
+}
+@-o-keyframes circle {
+	from { box-shadow: 0px 0px 10px 5px #333; }
+	50% { box-shadow: 0px 0px 10px 5px #FFF; }
+	to { box-shadow: 0px 0px 10px 5px #333; }
+@-moz-keyframes circle {
+	from { box-shadow: 0px 0px 10px 5px #333; }
+	50% { box-shadow: 0px 0px 10px 5px #FFF; }
+	to { box-shadow: 0px 0px 10px 5px #333; }
+}
+@keyframes circle {
+	from { box-shadow: 0px 0px 10px 5px #333; }
+	50% { box-shadow: 0px 0px 10px 5px #FFF; }
+	to { box-shadow: 0px 0px 10px 5px #333; }2
+}

@@ -9,15 +9,18 @@
 class controller extends god{
     
     public $db;
+    public $sm;
     protected  $core;
     
 
     function __construct(){
         $this->db = new SafeMySQL();
-    }
+        $this->Sm = new Smarty();
 
-    function render(){
-        echo "<h1>Тут будет шаблонизатор</h1>";
+        $this->Sm->template_dir = $_SERVER['DOCUMENT_ROOT']."/tpl";
+		$this->Sm->compile_dir = $_SERVER['DOCUMENT_ROOT']."/tpl_c";
+
+		$this->Sm->assign('date',date("Y"));
     }
 
 }
