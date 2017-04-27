@@ -1,4 +1,3 @@
 <?php
-
 $re_route = array();
-$re_route["/ru"] = "/main/lang/ru";
+$re_route["/[lang]"] = "/main/[an]/[lang]";

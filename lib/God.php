@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: 2
@@ -82,13 +81,8 @@ class God{
             $cur_obj = new $name_obj;
             $cur_obj->index();
         }else{
-            include "reroute.php";
-            $url = "";
-            foreach ($this->params as $param) {
-                $url .= "/".$param;
-            }
-                if(isset($re_route[$url])){
-                    header("location:".$re_route[$url]);
+                if($this->re_routing($this->param)){
+                    
                 }else{
                     header("HTTP/1.0 404 Not Found");
                     echo "<h1>Контроллера нету (404)</h1>"; 
@@ -111,5 +105,17 @@ class God{
             };
         }
         return $serch_edit;
+    }
+
+    function re_routing($params){
+        require_once("reroute.php");
+        debug($params);
+        debug($re_route);
+
+        foreach ($re_route as $key => $route) {
+            $count = preg_match_all("/[[a-zA-Z0-9_]+]/", $route,$match);
+            debug($match);
+        }
+        return true;
     }
 }?>

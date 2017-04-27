@@ -12,4 +12,7 @@ class main_con extends controller{
       $this->Sm->assign('win','1000');
       $this->Sm->display('index.tpl'); 
    }
+   function lang($lang){
+   	echo $lang;
+   }
 }
