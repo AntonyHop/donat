@@ -9,18 +9,19 @@
 class controller extends god{
     
     public $db;
-    public $sm;
-    protected  $core;
+    public $tpl;
     
 
     function __construct(){
         $this->db = new SafeMySQL();
-        $this->Sm = new Smarty();
+        $this->tpl = new TplMaster("tpl");
+		$this->tpl->set('date',date("Y"));
+    }
 
-        $this->Sm->template_dir = $_SERVER['DOCUMENT_ROOT']."/tpl";
-		$this->Sm->compile_dir = $_SERVER['DOCUMENT_ROOT']."/tpl_c";
-
-		$this->Sm->assign('date',date("Y"));
+    function show_404(){
+        header("HTTP/1.0 404 Not Found");
+        $this->tpl->set('title', '404');
+        $this->tpl->show('404.tpl');
     }
 
 }

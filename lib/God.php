@@ -5,7 +5,7 @@
  * Date: 01.07.2016
  * Time: 12:24
  */
-
+//РИСУЕТ ОКНО ДЕБАГА
 function debug($data){
     echo "<pre style='background-color: brown;color: cornsilk;font-weight: 700;padding: 10px;z-index: 100000;'>";
     echo "<h1>Debug!!!</h1>";
@@ -14,31 +14,34 @@ function debug($data){
 }
 
 class God{
-
+    //РОСПАРСЕНЫЕ ПАРАМЕТРЫ КОМАНДНОЙ СТРОКИ ДОСТУПНЫЕ ТОЛЬКО ИЗ КЛАССА
     protected $params = array();
+    //ПАРАМЕТРЫ КОМАНДНОЙ СТРОКИ НА ЭКСПОРТ
     public $param = array();
     public $db;
 
-    public $route = array();
-
     function __construct($url){
-        $CLEAN_url = $this->strip_data($url);
-        $this->params = explode("/",$CLEAN_url);
+        $this->params = $this->get_params($url);
         $this->param = $this->params;
         $this->dell_empty();
         $this->mvc_realise();
         unset($url);
         unset($CLEAN_url);
     }
-
-   public function strip_data($text){
+    //Расбивает url на массив
+    function get_params($url){
+        $CLEAN_url = $this->strip_data($url);
+        $params = explode("/",$CLEAN_url);
+        return $params;
+    }
+    //чистит url
+    public function strip_data($text){
         $quotes = array ("\x27", "\x22", "\x60", "\t", "\n", "\r", "*", "%", "<", ">", "?", "!" );
         $goodquotes = array ("-", "+", "#" );
         $repquotes = array ("\-", "\+", "\#" );
         $text = trim( strip_tags( $text ) );
         $text = str_replace( $quotes, '', $text );
         $text = str_replace( $goodquotes, $repquotes, $text );
-
         return $text;
     }
 
@@ -46,12 +49,13 @@ class God{
         foreach ($this->params as $key=>$param){
             if(empty($param)){
               unset($this->params[$key]);
+              unset($this->param[$key]);
             }
         }
     }
 
     /**
-     *
+     * реализует mvс паттерн
      */
     function mvc_realise(){
         include_once CONTROLLER."/controller.php";
@@ -81,41 +85,56 @@ class God{
             $cur_obj = new $name_obj;
             $cur_obj->index();
         }else{
-                if($this->re_routing($this->param)){
-                    
-                }else{
-                    header("HTTP/1.0 404 Not Found");
-                    echo "<h1>Контроллера нету (404)</h1>"; 
-                    echo "<p>или альтернативного правила маршрутизации</p>";
-                }       
+            include_once CONTROLLER."/".HOME_CONTROL.".php";
+            $name_obj = HOME_CONTROL;
+            $cur_obj = new $name_obj;
+                if(!$this->re_routing($this->param)){
+                    if(method_exists($cur_obj,"paging")){
+                        $to_method = $this->params;
+                        $cur_obj->paging($to_method);
+                    }else{
+                        header("HTTP/1.0 404 Not Found");
+                        echo "<h1>Контроллера нету (404)</h1>"; 
+                        echo "<p>или альтернативного правила маршрутизации</p>";
+                    }
+                }    
+            }
         }
-    }
 
     function edit_mode($serch_edit,$cur_obj){
-        foreach($serch_edit as $key=>$item){
-            if($item == "edit"){
-                if (isset($serch_edit[$key+1]) && isset($serch_edit[$key-1])){
-                    $cur_obj->edit($serch_edit[$key+1]);
-                    $serch_edit = array_slice($serch_edit,0,$key+1);
-                }elseif(isset($serch_edit[$key-1]) && empty($serch_edit[$key+1])){
-                    $cur_obj->edit($serch_edit[$key-1]);
-                    $serch_edit = array_slice($serch_edit,0,$key-1);
-                }
-                $serch_edit = array_slice($serch_edit,0,$key);
-            };
+        if(method_exists($cur_obj,"edit")){
+            foreach($serch_edit as $key=>$item){
+
+                if($item == "edit"){
+                    if (isset($serch_edit[$key+1]) && isset($serch_edit[$key-1])){
+                        $cur_obj->edit($serch_edit[$key+1]);
+                        $serch_edit = array_slice($serch_edit,0,$key+1);
+                    }elseif(isset($serch_edit[$key-1]) && empty($serch_edit[$key+1])){
+                        $cur_obj->edit($serch_edit[$key-1]);
+                        $serch_edit = array_slice($serch_edit,0,$key-1);
+                    }
+                    $serch_edit = array_slice($serch_edit,0,$key);
+                };
+            }
         }
         return $serch_edit;
     }
 
     function re_routing($params){
         require_once("reroute.php");
-        debug($params);
-        debug($re_route);
-
-        foreach ($re_route as $key => $route) {
-            $count = preg_match_all("/[[a-zA-Z0-9_]+]/", $route,$match);
-            debug($match);
+        $url = "";
+        foreach ($params as $param) {
+            $url .= "/".$param;
         }
-        return true;
+        if (isset($re_route[$url])){
+            $this->params = $this->get_params($re_route[$url]);
+            $this->param = $this->params; 
+            $this->dell_empty();
+            $this->mvc_realise();
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 }?>

@@ -1,6 +1,6 @@
 	<div class="clear"></div>
 	<footer>
-		<div class="copy"> &copy Лотарея DonAt {$date}</div>
+		<div class="copy"> &copy Лотарея DonAt <?=$this->date?></div> 
 	</footer>	
 </body>
 </html>

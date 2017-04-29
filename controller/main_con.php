@@ -8,11 +8,24 @@
  */
 class main_con extends controller{
     function index(){
-      $this->Sm->assign('title', 'Главная');
-      $this->Sm->assign('win','1000');
-      $this->Sm->display('index.tpl'); 
+      $win = 100000;
+      $this->tpl->set('title', 'Главная');
+      $this->tpl->set('winner',$win);
+      $this->tpl->show('index.tpl'); 
    }
-   function lang($lang){
+   function paging($pages = array()){
+   		$this->tpl->set('title', '');
+   		if ($pages[0] == "about"){
+   			$this->tpl->set('title', 'О проэкте');
+   			$this->tpl->show('static.tpl');
+   		}else{
+   			$this->show_404();
+   		}
+   }
+   function edit($edit){
+      echo " ".$edit." ";
+   }
+   function lang($lang = "ru"){
    	echo $lang;
    }
 }
