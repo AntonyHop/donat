@@ -17,8 +17,10 @@
 		</div>
 		
 			<ul class="main_menu col-md-7">
-
-				<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">Воход</button></li>
+				<?if (!is_auth()){?>
+				<li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">Вход</button></li><?}else{?>
+				<li><a href="/main/logout" class="btn btn-primary">Выход</a></li>
+				<?}?>
 				<li><a href="/news">Новости</a></li>
 				<li><a href="/about">О проэкте</a></li>
 				<li><a href="/">Главная</a></li>
@@ -38,7 +40,7 @@
 						<div class="form-group">
 						  <label class="col-md-4 control-label" for="textinput">Логин</label>  
 						  <div class="col-md-5">
-						  <input id="textinput" name="textinput" type="text" placeholder="ms_root" class="form-control input-md">
+						  <input id="textinput" name="textinput" type="text" placeholder="ms_root" class="form-control input-md log_log">
 						
 						  </div>
 						</div>
@@ -47,19 +49,40 @@
 						<div class="form-group">
 						  <label class="col-md-4 control-label" for="passwordinput">Пароль</label>
 						  <div class="col-md-5">
-						    <input id="passwordinput" name="passwordinput" type="password" placeholder="123456" class="form-control input-md">
+						    <input id="passwordinput" name="passwordinput" type="password" placeholder="123456" class="form-control input-md log_pass">
 						  
 						  </div>
 						</div>
 			        </div>
 			      </div>
+			      <div class="errors" style="margin:10px;color:red"></div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-primary">Войти</button>
+			        <button type="button" class="btn btn-primary login">Войти</button>
 			      </div>
 			    </div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
+		<script type="text/javascript">
+				$(document).ready(function(){
+					$('.login').click(function(){
+						$(".errors").empty(); 
+						$.post("/main/login",{user:{name:$('.log_log').val(),pass:$('.log_pass').val()}},function(data){
+							if(data != "done"){
+								$(".errors").html(data);
 
+							}else{
+								$("#modal").modal("hide");
+								location.reload();
+							}
+						});
+						
+					});
+
+					$("[data-toggle='modal']").click(function(){
+						$(".errors").empty(); 
+					});
+				});
+			</script>
 	</header>
 	<div class="clear"></div>
 

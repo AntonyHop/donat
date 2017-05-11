@@ -13,6 +13,27 @@ class main_con extends controller{
       $this->tpl->set('winner',$win);
       $this->tpl->show('index.tpl'); 
    }
+
+   function regist(){
+      $user = $this->load_model("user");
+      if(isset($_POST["user"])){
+         $user->add($_POST["user"]["name"],$_POST["user"]["pass"]);
+         $user->get_error_list();
+      }
+   }
+   function login(){
+      $user = $this->load_model("user");
+      if(isset($_POST["user"])){
+         $user->auth($_POST["user"]["name"],$_POST["user"]["pass"]);
+         $user->get_error_list();
+      }
+   }
+   function logout(){
+       $user = $this->load_model("user");
+       $user->logout();
+   }
+
+
    function paging($pages = array()){
    		$this->tpl->set('title', '');
    		if ($pages[0] == "about"){

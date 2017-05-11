@@ -11,6 +11,7 @@ class TplMaster{
 		$this->tpl_folder = $tpl_folder;
 	}
 
+
 	public function set($name,$val, $is_html = false){
 		if ($is_html){
 			$this->_vars[$name] = (string) $val;
@@ -50,6 +51,21 @@ class TplMaster{
 		$path_to_tpl = $this->tpl_folder."/".$tpl;
 		if (is_file($path_to_tpl)){
 			ob_start();
+
+
+		function is_auth(){
+			if (isset($_SESSION["user"])) return true; else return false;
+		}
+
+		function is_admin(){
+			if (isset($_SESSION["user"])){
+				if($_SESSION["user"]["level"] == 1){
+					return true;
+				}
+			}
+			return false;
+		}
+
 			require $path_to_tpl;
 			echo ob_get_clean();
 		}else{
